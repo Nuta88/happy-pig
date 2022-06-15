@@ -4,8 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
+import { HeaderComponent } from './core/components/header/header.component';
+import { ContentLayoutComponent } from './core/components/content-layout/content-layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({

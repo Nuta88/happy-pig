@@ -1,0 +1,7 @@
+mat-grid-tile {
+  box-shadow: rgba(0, 0, 0, 0.16) 0 .063rem .25rem;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0 .19rem .5rem;
+    cursor: pointer;
+  }
+}

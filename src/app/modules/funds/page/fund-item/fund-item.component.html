@@ -1,0 +1,10 @@
+<section
+  routerLink="{{fundDetailsApi}}"
+  matRipple
+  [matRippleColor]="color"
+  class="fund-container"
+>
+  <div class="fund-title">{{fund.name}}</div>
+  <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
+  <div class="current-amount">{{getCurrentAmount()}}₴</div>
+</section>
