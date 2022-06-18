@@ -1,0 +1,5 @@
+<mat-grid-list cols="3" rowHeight="2:1" gutterSize="16">
+  <mat-grid-tile *ngFor="let fund of funds">
+    <app-fund-item [fund]="fund"></app-fund-item>
+  </mat-grid-tile>
+</mat-grid-list>
