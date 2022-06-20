@@ -1,0 +1,42 @@
+<div>
+  <h2 mat-dialog-title>New Fund</h2>
+  <mat-dialog-content>
+    <div class="dialog-content">
+      <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter name of fund"
+          type="text"
+          [(ngModel)]="data.fund.name"
+          (change)="data.fund.name=data.fund.name.trim()">
+        <mat-icon matSuffix>savings</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Amount</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Enter amount of fund"
+          [(ngModel)]="data.fund.plannedAmount">
+        <span matSuffix>₴</span>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions>
+    <button
+      mat-button
+      (click)="onNoClick()"
+    >
+      CANCEL
+    </button>
+    <button
+      mat-button
+      color="primary"
+      [mat-dialog-close]="data.fund"
+      [disabled]="!data.fund.name || !data.fund.plannedAmount"
+    >
+      ADD
+    </button>
+  </div>
+</div>

@@ -1,7 +1,21 @@
 mat-grid-tile {
   box-shadow: rgba(0, 0, 0, 0.16) 0 .063rem .25rem;
+
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.24) 0 .19rem .5rem;
     cursor: pointer;
+  }
+}
+
+mat-grid-tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .fund-page-header {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 500;
   }
 }
