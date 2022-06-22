@@ -20,11 +20,11 @@ export class Fund {
   }
 }
 
-export type DataModal = {
+export type FundType = {
   fund: Fund
 }
 
 export type AddFundModalConfig = {
   width: string,
-  data: DataModal
+  data: FundType
 }
