@@ -11,6 +11,10 @@
   font-size: 1.3rem;
   font-weight: 500;
   color: #313f8e;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .current-amount {

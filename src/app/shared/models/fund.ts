@@ -1,4 +1,4 @@
-import { Expense } from './expense';
+import {Expense} from './expense';
 
 export class Fund {
   id: number | null;
@@ -7,15 +7,24 @@ export class Fund {
   currentAmount?: number | null;
   expenses: Array<Expense>;
 
-  constructor( name: string = '',
-               id: number  | null = null,
-               plannedAmount: number = 0,
-               currentAmount: number | null = null,
-               expenses: Array<Expense> = [] ) {
+  constructor(name: string = '',
+              id: number | null = null,
+              plannedAmount: number = 0,
+              currentAmount: number | null = null,
+              expenses: Array<Expense> = []) {
     this.id = id;
     this.name = name;
     this.plannedAmount = plannedAmount;
     this.currentAmount = currentAmount;
     this.expenses = expenses;
   }
+}
+
+export type FundType = {
+  fund: Fund
+}
+
+export type AddFundModalConfig = {
+  width: string,
+  data: FundType
 }
