@@ -1,4 +1,5 @@
 import {Expense} from './expense';
+import {TConfirmModalConfigData, TModalConfig} from './modal';
 
 export class Fund {
   id: number | null;
@@ -20,11 +21,14 @@ export class Fund {
   }
 }
 
-export type FundType = {
+export type TFund = {
   fund: Fund
 }
 
-export type AddFundModalConfig = {
-  width: string,
-  data: FundType
+export type TFundModalConfigData = {
+  data: TFund
 }
+
+export type TAddFundModalConfig = TModalConfig & TFundModalConfigData
+
+export type TRemoveFundModalConfig = TModalConfig & TConfirmModalConfigData

@@ -5,6 +5,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+
+  .fund-remove-btn {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &:hover {
+    .fund-remove-btn {
+      visibility: visible;
+    }
+  }
 }
 
 .fund-title {

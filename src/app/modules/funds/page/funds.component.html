@@ -12,6 +12,6 @@
     </button>
   </mat-grid-tile-header>
   <mat-grid-tile *ngFor="let fund of funds">
-    <app-fund-item [fund]="fund"></app-fund-item>
+    <app-fund-item [fund]="fund" [onRemoveFund]="openRemoveModal"></app-fund-item>
   </mat-grid-tile>
 </mat-grid-list>

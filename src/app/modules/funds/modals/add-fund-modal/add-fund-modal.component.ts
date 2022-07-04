@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TFund} from '../../../../shared/models/fund';
 
 @Component({
   selector: 'app-add-fund-modal',
@@ -11,7 +12,7 @@ export class AddFundModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AddFundModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: TFund) {
   }
 
   onNoClick = (): void => this.dialogRef.close();

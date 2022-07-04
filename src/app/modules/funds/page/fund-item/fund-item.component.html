@@ -1,9 +1,14 @@
 <section
   routerLink="{{fundDetailsApi}}"
-  matRipple
-  [matRippleColor]="color"
   class="fund-container"
 >
+  <button mat-icon-button
+          color="primary"
+          aria-label="Remove fund button"
+          class="fund-remove-btn"
+          (click)="handleRemoveFund($event)">
+    <mat-icon>delete-forever</mat-icon>
+  </button>
   <div class="fund-title">{{fund.name}}</div>
   <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
   <div class="current-amount">{{getCurrentAmount()}}₴</div>

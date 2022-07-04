@@ -1,0 +1,24 @@
+.mat-dialog-container {
+  width: 200px;
+}
+
+.confirm-title {
+  margin: 1rem 0 .1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.confirm-subtitle {
+  font-size: .9rem;
+  font-weight: 400;
+}
+
+.confirm-icon {
+  text-align: center;
+  color: rgba(244, 67, 54, .7);
+
+  i {
+    font-size: 5rem;
+
+  }
+}

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Fund} from '../../../../shared/models/fund';
-import {Color} from '../../../../core/constants/funds';
 
 @Component({
   selector: 'app-fund-item',
@@ -9,8 +8,8 @@ import {Color} from '../../../../core/constants/funds';
 })
 export class FundItemComponent implements OnInit {
   @Input() fund: Fund;
+  @Input() onRemoveFund: (fund: Fund) => void;
   percentage: number = 0;
-  color: string = Color.RIPPLE_COLOR;
   fundDetailsApi: string;
 
   constructor() {
@@ -21,5 +20,12 @@ export class FundItemComponent implements OnInit {
     this.fundDetailsApi = `/funds/${this.fund.id}`
   }
 
-  public getCurrentAmount = () => (this.fund.currentAmount ?? 0) / 100;
+  getCurrentAmount = () => (this.fund.currentAmount ?? 0) / 100;
+
+  handleRemoveFund = (event: MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    this.onRemoveFund(this.fund);
+    return false;
+  }
 }
