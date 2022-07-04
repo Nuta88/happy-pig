@@ -1,0 +1,25 @@
+<section>
+  <div class="confirm-icon">
+    <i class="material-icons">
+      error_outline
+    </i>
+  </div>
+
+  <div mat-dialog-title>
+    <p class="confirm-title">
+      Delete the {{data.title}}?
+    </p>
+    <p class="confirm-subtitle">
+      Are you sure you want to permanently delete the {{data.title}}?
+    </p>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button color="warn" [mat-dialog-close]="true">
+      YES
+    </button>
+    <button mat-button cdkFocusInitial (click)="onNoClick()">
+      NO
+    </button>
+  </div>
+</section>
