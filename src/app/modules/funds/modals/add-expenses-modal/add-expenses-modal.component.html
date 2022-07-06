@@ -1,0 +1,68 @@
+<div>
+  <h2 mat-dialog-title>{{data.title || 'Create Expense'}}</h2>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>Recipient</mat-label>
+      <input
+        matInput
+        placeholder="Enter name of recipient"
+        type="text"
+        [(ngModel)]="data.expense.recipient"
+        (change)="data.expense.recipient=data.expense.recipient.trim()">
+    </mat-form-field>
+    <div class="dialog-content">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          [matDatepickerFilter]="myFilter"
+          [formControl]="getFormData()"
+          [(ngModel)]="data.expense.date"
+          (dateChange)="onChangeData()"
+        >
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Amount</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Enter amount of expense"
+          [(ngModel)]="data.expense.paymentAmount">
+        <span matSuffix>₴</span>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Enter amount of expense"
+        [(ngModel)]="data.expense.description">
+      </textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <div mat-dialog-actions>
+    <button
+      mat-button
+      (click)="onNoClick()"
+    >
+      CANCEL
+    </button>
+    <button
+      mat-button
+      color="primary"
+      [mat-dialog-close]="data.expense"
+      [disabled]="!data.expense.recipient || !data.expense.paymentAmount || !data.expense.date"
+    >
+      SAVE
+    </button>
+  </div>
+</div>

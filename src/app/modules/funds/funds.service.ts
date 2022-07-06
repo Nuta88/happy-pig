@@ -16,9 +16,11 @@ export class FundsService {
   constructor(private http: HttpClient) {
   }
 
-  getFunds = (): Observable<Fund[]> => this.http.get<Fund[]>(this.api);
+  getAll = (): Observable<Fund[]> => this.http.get<Fund[]>(this.api);
 
-  removeFund = (id: number) => this.http.delete(`${this.api}/delete/${id}`);
+  getById = (id: number): Observable<Fund> => this.http.get<Fund>(`${this.api}/${id}`);
+
+  remove = (id: number) => this.http.delete(`${this.api}/delete/${id}`);
 
   create = (fund: Fund): void => {
     this.http.post(`${this.api}/create`, fund)
@@ -27,7 +29,11 @@ export class FundsService {
       });
   };
 
+  update = (fund: Fund, id: number): Observable<Fund> => {
+    return this.http.put<Fund>(`${this.api}/update/${id}`, fund);
+  };
+
   saveFundsToSubject = (fund: Fund): void => this.subject.next({fund});
 
-  getSavedFund = (): Observable<any> => this.subject.asObservable();
+  getSavedFund = (): Observable<TFund> => this.subject.asObservable();
 }

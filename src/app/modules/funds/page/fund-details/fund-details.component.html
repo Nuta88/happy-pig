@@ -1,1 +1,75 @@
-<p>fund-details works!</p>
+<mat-card>
+  <mat-card-title>
+    <div class="fund-title-container">
+      <span class="fund-title-container__btn" (click)="back()">
+        <mat-icon color="primary">arrow_back</mat-icon>
+      </span>
+      <h2 class="fund-title">{{fund?.name || 'Fund name'}}</h2>
+    </div>
+
+    <button
+      mat-fab
+      color="primary"
+      matTooltip="Add new expenses"
+      matTooltipPosition="above"
+      aria-label="Button add new expenses"
+      (click)="openAddModal()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-subtitle>
+    <div>
+      <span class="fund-card-subtitle">Budget</span>
+      <span>₴{{getCurrentAmount(fund?.plannedAmount || 0)}}</span>
+    </div>
+    <div>
+      <span class="fund-card-subtitle">Balance</span>
+      <span>₴{{getCurrentAmount(fund?.currentAmount || 0)}}</span>
+    </div>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <h4 class="expenses-table-title">
+      <span>Expenses ₴{{getExpensesAmount()}}</span>
+      <span class="expenses-table-title__total">Total: {{fund?.expenses?.length ?? 0}}</span>
+    </h4>
+    <table
+      mat-table
+      [dataSource]="fund?.expenses || []"
+      class="mat-elevation-z8 expenses-table"
+    >
+      <ng-container matColumnDef="recipient">
+        <th mat-header-cell *matHeaderCellDef>Recipient</th>
+        <td mat-cell *matCellDef="let element"> {{element.recipient}} </td>
+      </ng-container>
+      <ng-container matColumnDef="paymentAmount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let element">
+          {{getCurrentAmount(element.paymentAmount || 0)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            aria-label="Edit expenses button"
+            (click)="openEditModal(element)"
+          >
+            <mat-icon class="material-icons_color">edit</mat-icon>
+          </button>
+          <button mat-icon-button aria-label="Remove expenses button">
+            <mat-icon class="material-icons_color">delete-forever</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

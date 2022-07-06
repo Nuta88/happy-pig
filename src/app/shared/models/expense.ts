@@ -1,14 +1,16 @@
+import * as moment from 'moment';
+
 export class Expense {
   id: number | null;
   paymentAmount: number;
   recipient: string;
-  date?: Date;
+  date?: string;
   description?: string;
 
   constructor(id: number | null = null,
               paymentAmount: number = 0,
               recipient: string = '',
-              date: Date = new Date(),
+              date: string = moment().format('YYYY-MM-DD'),
               description: string = '') {
     this.id = id;
     this.paymentAmount = paymentAmount;
