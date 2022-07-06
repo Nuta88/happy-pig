@@ -17,7 +17,7 @@ import {convertToCurrency, convertToPennies, numberWithSpace, upsertExpense} fro
 export class FundDetailsComponent implements OnInit {
   displayedColumns: string[] = ['recipient', 'paymentAmount', 'description', 'actions'];
   expensesModalConfig: TModalConfig = {
-    width: '650px',
+    width: '40.3rem',
     enterAnimationDuration: '400ms',
     exitAnimationDuration: '100ms',
   };
