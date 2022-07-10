@@ -20,6 +20,8 @@ export class FundsService {
 
   getById = (id: number): Observable<Fund> => this.http.get<Fund>(`${this.api}/${id}`);
 
+  getSavedFund = (): Observable<TFund> => this.subject.asObservable();
+
   remove = (id: number) => this.http.delete(`${this.api}/delete/${id}`);
 
   create = (fund: Fund): void => {
@@ -34,6 +36,4 @@ export class FundsService {
   };
 
   saveFundsToSubject = (fund: Fund): void => this.subject.next({fund});
-
-  getSavedFund = (): Observable<TFund> => this.subject.asObservable();
 }

@@ -23,8 +23,9 @@ export class AddExpensesModalComponent {
 
   getFormData = () => new FormControl(this.data.expense.date);
 
-  myFilter = (d: Date | null): boolean => {
+  isTheDateAvailable = (d: Date | null): boolean => {
     const data = d || new Date();
+
     return moment(data).isBefore(moment()) || moment(data).isSame(moment(), 'day');
   };
 

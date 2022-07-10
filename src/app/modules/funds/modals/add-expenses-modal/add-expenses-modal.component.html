@@ -16,7 +16,7 @@
         <input
           matInput
           [matDatepicker]="datepicker"
-          [matDatepickerFilter]="myFilter"
+          [matDatepickerFilter]="isTheDateAvailable"
           [formControl]="getFormData()"
           [(ngModel)]="data.expense.date"
           (dateChange)="onChangeData()"

@@ -11,7 +11,7 @@ export const convertToPennies = (amount: number) => (amount * 100);
 export const upsertExpense = (expenses: Expense[], expense: Expense): Expense[] => {
   const elementIndex = expenses.findIndex(e => e.id === expense.id);
 
-  if (elementIndex > -1) {
+  if (elementIndex != -1) {
     expenses[elementIndex] = expense;
   } else {
     expenses.push(expense);
