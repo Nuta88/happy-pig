@@ -3,11 +3,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
 import {FundsService} from '../../funds.service';
-import {Fund, TExpensesModalConfig} from '../../../../shared/models/fund';
+import {Fund, TExpensesModalConfig, TRemoveFundModalConfig} from '../../../../shared/models/fund';
 import {AddExpensesModalComponent} from '../../modals/add-expenses-modal/add-expenses-modal.component';
 import {Expense} from '../../../../shared/models/expense';
 import {TModalConfig} from '../../../../shared/models/modal';
 import {convertToCurrency, convertToPennies, numberWithSpace, upsertExpense} from '../../../../shared/utils/funds';
+import {ConfirmModalComponent} from "../../../../shared/components/modals/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: 'app-fund-details',
@@ -22,7 +23,7 @@ export class FundDetailsComponent implements OnInit {
     exitAnimationDuration: '100ms',
   };
   fund: Fund;
-  id: number | null;
+  fundId: number | null;
 
   constructor(
     private fundService: FundsService,
@@ -38,12 +39,12 @@ export class FundDetailsComponent implements OnInit {
 
   getParamId = (): void => {
     const paramsId = this.route.snapshot.paramMap.get('id');
-    this.id = paramsId && paramsId.length ? Number(paramsId) : null;
+    this.fundId = paramsId && paramsId.length ? Number(paramsId) : null;
   };
 
   getFund = (): void => {
-    if (this.id) {
-      this.fundService.getById(this.id).subscribe((res: Fund) => {
+    if (this.fundId) {
+      this.fundService.getById(this.fundId).subscribe((res: Fund) => {
         this.fund = res;
       });
     }
@@ -52,6 +53,40 @@ export class FundDetailsComponent implements OnInit {
   back = (): void => {
     this.router.navigateByUrl('/funds');
   };
+
+  getCurrentAmount = (amount: number) => numberWithSpace(convertToCurrency(amount));
+
+  getExpensesAmount = () => {
+    const expensesAmount = this.fund?.plannedAmount - (this.fund?.currentAmount ?? 0);
+
+    return this.getCurrentAmount(expensesAmount);
+  }
+
+  onUpdateFund = () => {
+    if (this.fundId) {
+      this.fundService.update(this.fund, this.fundId)
+        .subscribe((res: Fund) => {
+          this.fund = res;
+        });
+    }
+  };
+
+  onSaveExpenses = (expense: Expense | undefined) => {
+    if (expense) {
+      expense.paymentAmount = convertToPennies(expense.paymentAmount);
+      this.fund.expenses = upsertExpense(this.fund.expenses, expense);
+
+      this.onUpdateFund();
+    }
+  };
+
+  onRemoveFund = (isRemove: boolean, id: number | null) => {
+    if (isRemove && id) {
+      this.fund.expenses = this.fund.expenses.filter(expense => expense.id !== id);
+
+      this.onUpdateFund();
+    }
+  }
 
   openAddModal = (): void => {
     const addModalConfig: TExpensesModalConfig = {
@@ -79,23 +114,14 @@ export class FundDetailsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((expense) => this.onSaveExpenses(expense));
   };
 
-  onSaveExpenses = (expense: Expense | undefined) => {
-    if (expense && this.id) {
-      expense.paymentAmount = convertToPennies(expense.paymentAmount);
-      this.fund.expenses = upsertExpense(this.fund.expenses, expense);
+  openRemoveModal = (expense: Expense) => {
+    const modalConfirm: TRemoveFundModalConfig = {
+      enterAnimationDuration: '600ms',
+      exitAnimationDuration: '100ms',
+      data: {title: `expense for "${expense.recipient}"`}
+    };
+    const dialogRef = this.dialog.open(ConfirmModalComponent, modalConfirm);
 
-      this.fundService.update(this.fund, this.id)
-        .subscribe((res: Fund) => {
-          this.fund = res;
-        });
-    }
+    dialogRef.afterClosed().subscribe((isRemove: boolean) => this.onRemoveFund(isRemove, expense.id));
   };
-
-  getCurrentAmount = (amount: number) => numberWithSpace(convertToCurrency(amount));
-
-  getExpensesAmount = () => {
-    const expensesAmount = this.fund?.plannedAmount - (this.fund?.currentAmount ?? 0);
-
-    return this.getCurrentAmount(expensesAmount);
-  }
 }

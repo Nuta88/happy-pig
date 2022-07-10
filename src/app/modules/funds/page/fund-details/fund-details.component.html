@@ -62,7 +62,11 @@
           >
             <mat-icon class="material-icons_color">edit</mat-icon>
           </button>
-          <button mat-icon-button aria-label="Remove expenses button">
+          <button
+            mat-icon-button
+            aria-label="Remove expenses button"
+            (click)="openRemoveModal(element)"
+          >
             <mat-icon class="material-icons_color">delete-forever</mat-icon>
           </button>
         </td>
