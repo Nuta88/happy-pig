@@ -25,10 +25,21 @@ export type TFund = {
   fund: Fund
 }
 
+export type TExpenses = {
+  expense: Expense,
+  title: string
+}
+
 export type TFundModalConfigData = {
   data: TFund
+}
+
+export type TExpensesModalConfigData = {
+  data: TExpenses
 }
 
 export type TAddFundModalConfig = TModalConfig & TFundModalConfigData
 
 export type TRemoveFundModalConfig = TModalConfig & TConfirmModalConfigData
+
+export type TExpensesModalConfig = TModalConfig & TExpensesModalConfigData

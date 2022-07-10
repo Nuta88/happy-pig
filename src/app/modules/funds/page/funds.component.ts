@@ -31,7 +31,7 @@ export class FundsComponent implements OnInit, OnDestroy {
   }
 
   getList = (): void => {
-    this.fundService.getFunds()
+    this.fundService.getAll()
       .subscribe({
         next: (funds: Fund[]) => this.funds = funds,
         error: () => this.funds = []
@@ -72,7 +72,7 @@ export class FundsComponent implements OnInit, OnDestroy {
 
   onRemoveFund = (isRemove: boolean, fundId: number) => {
     if (isRemove) {
-      this.fundService.removeFund(fundId).subscribe(() => this.removeFundBy(fundId));
+      this.fundService.remove(fundId).subscribe(() => this.removeFundBy(fundId));
     }
   };
 }

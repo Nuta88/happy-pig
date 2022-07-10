@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Fund} from '../../../../shared/models/fund';
+import {convertToCurrency, numberWithSpace} from '../../../../shared/utils/funds';
 
 @Component({
   selector: 'app-fund-item',
@@ -20,7 +21,7 @@ export class FundItemComponent implements OnInit {
     this.fundDetailsApi = `/funds/${this.fund.id}`
   }
 
-  getCurrentAmount = () => (this.fund.currentAmount ?? 0) / 100;
+  getCurrentAmount = () => numberWithSpace(convertToCurrency(this.fund.currentAmount ?? 0));
 
   handleRemoveFund = (event: MouseEvent) => {
     event.stopPropagation();
