@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
+import {FormControl, Validators} from '@angular/forms';
 
 import {FundsService} from '../../funds.service';
 import {Fund, TExpensesModalConfig, TRemoveFundModalConfig} from '../../../../shared/models/fund';
@@ -17,13 +18,15 @@ import {ConfirmModalComponent} from "../../../../shared/components/modals/confir
 })
 export class FundDetailsComponent implements OnInit {
   displayedColumns: string[] = ['recipient', 'paymentAmount', 'description', 'actions'];
+  isEditFundName: boolean = false;
   expensesModalConfig: TModalConfig = {
     width: '40.3rem',
     enterAnimationDuration: '400ms',
     exitAnimationDuration: '100ms',
   };
-  fund: Fund;
+  fund: Fund = new Fund();
   fundId: number | null;
+  fundName: FormControl<string | null>;
 
   constructor(
     private fundService: FundsService,
@@ -44,11 +47,31 @@ export class FundDetailsComponent implements OnInit {
 
   getFund = (): void => {
     if (this.fundId) {
-      this.fundService.getById(this.fundId).subscribe((res: Fund) => {
-        this.fund = res;
+      this.fundService.getById(this.fundId).subscribe((fund: Fund) => {
+        this.fund = fund;
+        this.fundName = new FormControl(fund.name, [Validators.required]);
       });
     }
   };
+
+  onEditFundName = (event: MouseEvent) => {
+    event.stopPropagation();
+    this.isEditFundName = true;
+  }
+
+  closeEditFundName = () => {
+    if (this.isEditFundName && this.fundName.value) {
+      this.isEditFundName = false;
+      this.onUpdateFundName()
+    }
+  }
+
+  onUpdateFundName = () => {
+    if (this.fund.name !== this.fundName.value) {
+      this.fund.name = this.fundName.value as string;
+      this.onUpdateFund();
+    }
+  }
 
   back = (): void => {
     this.router.navigateByUrl('/funds');

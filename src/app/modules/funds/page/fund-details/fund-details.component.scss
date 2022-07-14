@@ -36,6 +36,28 @@ mat-card-subtitle {
       cursor: pointer;
     }
   }
+
+  &__input {
+    font-size: .87rem;
+  }
+
+  &__name {
+    display: flex;
+
+    .edit-name-btn {
+      visibility: hidden;
+      width: 1.63rem;
+      height: 1.63rem;
+      line-height: 1.63rem;
+      transform: scale(.7);
+    }
+
+    &:hover {
+      .edit-name-btn {
+        visibility: visible;
+      }
+    }
+  }
 }
 
 .expenses-table {
