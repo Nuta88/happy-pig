@@ -82,6 +82,7 @@ export class FundDetailsComponent implements OnInit {
   closeEditFundName = (): void => {
     if (this.isEditFundName && this.fundName.value) {
       this.onUpdateFundName();
+      this.isEditFundName = false;
     }
   }
 
@@ -109,8 +110,6 @@ export class FundDetailsComponent implements OnInit {
         .subscribe((res: Fund) => {
           this.fund = res;
           this.updateTableDataSource();
-
-          if (this.isEditFundName) this.isEditFundName = false;
         });
     }
   };
