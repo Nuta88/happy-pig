@@ -36,10 +36,11 @@ export class AddExpensesModalComponent {
     return moment(data).isBefore(moment()) || moment(data).isSame(moment(), 'day');
   };
 
-  isFieldsUnDirty = (): boolean =>
-    !this.recipient?.dirty && !this.amount?.dirty && !this.date?.dirty && !this.desc?.dirty;
+  isFieldsUnmodified = (): boolean => {
+    return !(this.recipient?.pristine || this.amount?.dirty || this.date?.dirty || this.desc?.dirty);
+  }
 
-  isFieldsEmpty = (): boolean => !this.recipient?.value || !this.amount?.value;
+  isFieldsEmpty = (): boolean => !(this.recipient?.value || this.amount?.value);
 
-  isDisabledSaveButton = (): boolean => this.isFieldsEmpty() || this.isFieldsUnDirty();
+  isDisabledSaveButton = (): boolean => this.isFieldsEmpty() || this.isFieldsUnmodified();
 }
