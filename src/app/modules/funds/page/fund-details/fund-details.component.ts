@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ContentChild, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatNoDataRow, MatTableDataSource} from '@angular/material/table';
+import {FormControl, Validators} from '@angular/forms';
 
 import {FundsService} from '../../funds.service';
 import {Fund, TExpensesModalConfig, TRemoveFundModalConfig} from '../../../../shared/models/fund';
@@ -16,14 +19,21 @@ import {ConfirmModalComponent} from "../../../../shared/components/modals/confir
   styleUrls: ['./fund-details.component.scss']
 })
 export class FundDetailsComponent implements OnInit {
-  displayedColumns: string[] = ['recipient', 'paymentAmount', 'description', 'actions'];
+  tableColumns: string[] = ['recipient', 'paymentAmount', 'description', 'actions'];
+  isEditFundName: boolean = false;
   expensesModalConfig: TModalConfig = {
     width: '40.3rem',
     enterAnimationDuration: '400ms',
     exitAnimationDuration: '100ms',
   };
-  fund: Fund;
+  fund: Fund = new Fund();
   fundId: number | null;
+  fundName: FormControl<string | null>;
+  tablePageSize: number[] = [5, 8];
+  dataSource = new MatTableDataSource<Expense>([]);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ContentChild(MatNoDataRow) noDataRow: MatNoDataRow;
 
   constructor(
     private fundService: FundsService,
@@ -37,6 +47,10 @@ export class FundDetailsComponent implements OnInit {
     this.getFund();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   getParamId = (): void => {
     const paramsId = this.route.snapshot.paramMap.get('id');
     this.fundId = paramsId && paramsId.length ? Number(paramsId) : null;
@@ -44,47 +58,77 @@ export class FundDetailsComponent implements OnInit {
 
   getFund = (): void => {
     if (this.fundId) {
-      this.fundService.getById(this.fundId).subscribe((res: Fund) => {
-        this.fund = res;
+      this.fundService.getById(this.fundId).subscribe((fund: Fund) => {
+        this.fund = fund;
+        this.updateTableDataSource();
+        this.setFormFundName(fund);
       });
     }
   };
+
+  setFormFundName = (fund: Fund): void => {
+    this.fundName = new FormControl(fund.name, [Validators.required]);
+  }
+
+  updateTableDataSource = (): void => {
+    this.dataSource.data = this.fund.expenses;
+  }
+
+  onEditFundName = (event: MouseEvent): void => {
+    event.stopPropagation();
+    this.isEditFundName = true;
+  }
+
+  closeEditFundName = (): void => {
+    if (this.isEditFundName && this.fundName.value) {
+      this.onUpdateFundName();
+    }
+  }
+
+  onUpdateFundName = (): void => {
+    if (this.fund.name !== this.fundName.value) {
+      this.onUpdateFund({...this.fund, name: this.fundName.value as string});
+    }
+  }
 
   back = (): void => {
     this.router.navigateByUrl('/funds');
   };
 
-  getCurrentAmount = (amount: number) => numberWithSpace(convertToCurrency(amount));
+  getCurrentAmount = (amount: number): string => numberWithSpace(convertToCurrency(amount));
 
-  getExpensesAmount = () => {
+  getExpensesAmount = (): string => {
     const expensesAmount = this.fund?.plannedAmount - (this.fund?.currentAmount ?? 0);
 
     return this.getCurrentAmount(expensesAmount);
   }
 
-  onUpdateFund = () => {
+  onUpdateFund = (fund: Fund): void => {
     if (this.fundId) {
-      this.fundService.update(this.fund, this.fundId)
+      this.fundService.update(fund, this.fundId)
         .subscribe((res: Fund) => {
           this.fund = res;
+          this.updateTableDataSource();
+
+          if (this.isEditFundName) this.isEditFundName = false;
         });
     }
   };
 
-  onSaveExpenses = (expense: Expense | undefined) => {
+  onSaveExpenses = (expense: Expense | undefined): void => {
     if (expense) {
       expense.paymentAmount = convertToPennies(expense.paymentAmount);
-      this.fund.expenses = upsertExpense(this.fund.expenses, expense);
+      const expenses = upsertExpense(this.fund.expenses, expense);
 
-      this.onUpdateFund();
+      this.onUpdateFund({...this.fund, expenses});
     }
   };
 
-  onRemoveFund = (isRemove: boolean, id: number | null) => {
+  onRemoveExpenses = (isRemove: boolean, id: number | null): void => {
     if (isRemove && id) {
-      this.fund.expenses = this.fund.expenses.filter(expense => expense.id !== id);
+      const expenses = this.fund.expenses.filter(expense => expense.id !== id);
 
-      this.onUpdateFund();
+      this.onUpdateFund({...this.fund, expenses});
     }
   }
 
@@ -114,7 +158,7 @@ export class FundDetailsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((expense) => this.onSaveExpenses(expense));
   };
 
-  openRemoveModal = (expense: Expense) => {
+  openRemoveModal = (expense: Expense): void => {
     const modalConfirm: TRemoveFundModalConfig = {
       enterAnimationDuration: '600ms',
       exitAnimationDuration: '100ms',
@@ -122,6 +166,6 @@ export class FundDetailsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(ConfirmModalComponent, modalConfirm);
 
-    dialogRef.afterClosed().subscribe((isRemove: boolean) => this.onRemoveFund(isRemove, expense.id));
+    dialogRef.afterClosed().subscribe((isRemove: boolean) => this.onRemoveExpenses(isRemove, expense.id));
   };
 }

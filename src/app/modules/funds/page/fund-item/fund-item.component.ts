@@ -21,7 +21,7 @@ export class FundItemComponent implements OnInit {
     this.fundDetailsApi = `/funds/${this.fund.id}`
   }
 
-  getCurrentAmount = () => numberWithSpace(convertToCurrency(this.fund.currentAmount ?? 0));
+  getCurrentAmount = () => numberWithSpace(convertToCurrency(this.fund.plannedAmount));
 
   handleRemoveFund = (event: MouseEvent) => {
     event.stopPropagation();

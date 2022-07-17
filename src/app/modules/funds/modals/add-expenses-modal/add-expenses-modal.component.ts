@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl} from '@angular/forms';
+import {NgModel} from '@angular/forms';
 import * as moment from 'moment';
 
 import {TExpenses} from '../../../../shared/models/fund';
@@ -12,6 +12,10 @@ import {convertToCurrency} from '../../../../shared/utils/funds';
   styleUrls: ['./add-expenses-modal.component.scss']
 })
 export class AddExpensesModalComponent {
+  @ViewChild('recipient') recipient: NgModel;
+  @ViewChild('amount') amount: NgModel;
+  @ViewChild('date') date: NgModel;
+  @ViewChild('desc') desc: NgModel;
 
   constructor(
     public dialogRef: MatDialogRef<AddExpensesModalComponent>,
@@ -21,7 +25,10 @@ export class AddExpensesModalComponent {
 
   onNoClick = (): void => this.dialogRef.close();
 
-  getFormData = () => new FormControl(this.data.expense.date);
+
+  onChangeData = (): void => {
+    this.data.expense.date = moment(this.data.expense.date).format('YYYY-MM-DD');
+  }
 
   isTheDateAvailable = (d: Date | null): boolean => {
     const data = d || new Date();
@@ -29,7 +36,11 @@ export class AddExpensesModalComponent {
     return moment(data).isBefore(moment()) || moment(data).isSame(moment(), 'day');
   };
 
-  onChangeData = () => {
-    this.data.expense.date = moment(this.data.expense.date).format('YYYY-MM-DD')
+  isFieldsUnmodified = (): boolean => {
+    return !(this.recipient?.pristine || this.amount?.dirty || this.date?.dirty || this.desc?.dirty);
   }
+
+  isFieldsEmpty = (): boolean => !(this.recipient?.value || this.amount?.value);
+
+  isDisabledSaveButton = (): boolean => this.isFieldsEmpty() || this.isFieldsUnmodified();
 }

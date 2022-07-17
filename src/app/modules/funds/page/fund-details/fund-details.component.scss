@@ -1,7 +1,3 @@
-mat-card {
-  min-height: calc(100vh - 8.75rem);
-}
-
 mat-card-title {
   display: flex;
   flex-direction: row;
@@ -15,7 +11,7 @@ mat-card-subtitle {
   justify-content: space-around;
   margin: 0 -1rem 1rem;
   padding: .8rem 0;
-  box-shadow: rgba(50, 50, 93, 0.15) 0 .12rem .31rem -.06rem, rgba(0, 0, 0, 0.12) 0 .06rem 0.19rem -.06rem;
+  box-shadow: 0 .125rem .063rem -.063rem rgba(0, 0, 0, 0.09), 0 .063rem .063rem 0 rgba(66, 66, 66, 0.07), 0 .063rem .188rem 0 rgba(59, 59, 59, 0.12);
   background-color: rgba(131, 148, 166, 0.13);
   color: #778899;
 }
@@ -34,6 +30,28 @@ mat-card-subtitle {
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  &__input {
+    font-size: .87rem;
+  }
+
+  &__name {
+    display: flex;
+
+    .edit-name-btn {
+      visibility: hidden;
+      width: 1.63rem;
+      height: 1.63rem;
+      line-height: 1.63rem;
+      transform: scale(.7);
+    }
+
+    &:hover {
+      .edit-name-btn {
+        visibility: visible;
+      }
     }
   }
 }
@@ -71,4 +89,9 @@ mat-card-subtitle {
     font-size: .8rem;
     padding-left: .2rem;
   }
+}
+
+.table-empty {
+  padding: 5.7rem 0;
+  text-align: center;
 }
