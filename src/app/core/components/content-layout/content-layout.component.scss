@@ -1,7 +1,15 @@
 .mat-layout-container {
   height: 100vh;
+  background-color: rgba(158, 178, 199, 0.09);
 
   &--content {
-    padding: 6rem 2.5rem 1rem;
+    max-width: 87.5rem;
+    padding: 5.6rem 2.5rem 1rem;
+    margin: 0 auto;
+
+    &--card {
+      height: calc(100vh - 8.5rem);
+      overflow: auto;
+    }
   }
 }

@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -24,7 +25,8 @@ import {ConfirmModalComponent} from './shared/components/modals/confirm-modal/co
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule
   ],
   exports: [ConfirmModalComponent],
   providers: [],

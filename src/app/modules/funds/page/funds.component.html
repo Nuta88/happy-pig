@@ -1,18 +1,20 @@
-<mat-grid-list cols="3" rowHeight="2:1" gutterSize="16">
-  <mat-grid-tile-header>
-    <div class="fund-page-header">Funds</div>
-    <button
-      mat-fab
-      color="primary"
-      matTooltip="Add new fund"
-      matTooltipPosition="above"
-      aria-label="Button add new fund"
-      (click)="openAddModal()"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-grid-tile-header>
-  <mat-grid-tile *ngFor="let fund of funds">
-    <app-fund-item [fund]="fund" [onRemoveFund]="openRemoveModal"></app-fund-item>
-  </mat-grid-tile>
-</mat-grid-list>
+<section class="fund-page-header-container">
+  <div class="fund-page-header">Funds</div>
+  <button
+    mat-fab
+    color="primary"
+    matTooltip="Add new fund"
+    matTooltipPosition="above"
+    aria-label="Button add new fund"
+    (click)="openAddModal()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</section>
+<section class="fund-grid-container">
+  <mat-grid-list cols="3" rowHeight="2:1" gutterSize="16">
+    <mat-grid-tile *ngFor="let fund of funds">
+      <app-fund-item [fund]="fund" [onRemoveFund]="openRemoveModal"></app-fund-item>
+    </mat-grid-tile>
+  </mat-grid-list>
+</section>

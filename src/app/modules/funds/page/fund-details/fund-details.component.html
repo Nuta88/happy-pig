@@ -1,59 +1,59 @@
-<mat-card>
-  <mat-card-title>
-    <div class="fund-title-container" (clickOutside)="closeEditFundName()">
+<mat-card-title>
+  <div class="fund-title-container" (clickOutside)="closeEditFundName()">
       <span class="fund-title-container__btn" (click)="back()">
         <mat-icon color="primary">arrow_back</mat-icon>
       </span>
-      <div *ngIf="isEditFundName; else fundNameBlock">
-        <mat-form-field appearance="legacy" class="fund-title-container__input">
-          <input matInput placeholder="Fund name" [formControl]="fundName" required>
-          <mat-error *ngIf="fundName.invalid">You must enter fund name</mat-error>
-        </mat-form-field>
+    <div *ngIf="isEditFundName; else fundNameBlock">
+      <mat-form-field appearance="legacy" class="fund-title-container__input">
+        <input matInput placeholder="Fund name" [formControl]="fundName" required>
+        <mat-error *ngIf="fundName.invalid">Please, enter fund name</mat-error>
+      </mat-form-field>
+    </div>
+    <ng-template #fundNameBlock>
+      <div class="fund-title-container__name">
+        <h2 class="fund-title">{{fund?.name}}</h2>
+        <button
+          mat-icon-button
+          color="primary"
+          class="edit-name-btn"
+          (click)="onEditFundName($event)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
       </div>
-      <ng-template #fundNameBlock>
-        <div class="fund-title-container__name">
-          <h2 class="fund-title">{{fund?.name}}</h2>
-          <button
-            mat-icon-button
-            color="primary"
-            class="edit-name-btn"
-            (click)="onEditFundName($event)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      </ng-template>
-    </div>
+    </ng-template>
+  </div>
 
-    <button
-      mat-fab
-      color="primary"
-      matTooltip="Add new expenses"
-      matTooltipPosition="above"
-      aria-label="Button add new expenses"
-      (click)="openAddModal()"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-card-title>
-  <mat-card-subtitle>
-    <div>
-      <span class="fund-card-subtitle">Budget</span>
-      <span>₴{{getCurrentAmount(fund?.plannedAmount || 0)}}</span>
-    </div>
-    <div>
-      <span class="fund-card-subtitle">Balance</span>
-      <span>₴{{getCurrentAmount(fund?.currentAmount || 0)}}</span>
-    </div>
-  </mat-card-subtitle>
-  <mat-card-content>
-    <h4 class="expenses-table-title">
-      <span>Expenses ₴{{getExpensesAmount()}}</span>
-      <span class="expenses-table-title__total">Total: {{fund?.expenses?.length ?? 0}}</span>
-    </h4>
+  <button
+    mat-fab
+    color="primary"
+    matTooltip="Add new expenses"
+    matTooltipPosition="above"
+    aria-label="Button add new expenses"
+    (click)="openAddModal()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-card-title>
+<mat-card-subtitle>
+  <div>
+    <span class="fund-card-subtitle">Budget</span>
+    <span>₴{{getCurrentAmount(fund?.plannedAmount || 0)}}</span>
+  </div>
+  <div>
+    <span class="fund-card-subtitle">Balance</span>
+    <span>₴{{getCurrentAmount(fund?.currentAmount || 0)}}</span>
+  </div>
+</mat-card-subtitle>
+<mat-card-content>
+  <h4 class="expenses-table-title">
+    <span>Expenses ₴{{getExpensesAmount()}}</span>
+    <span class="expenses-table-title__total">Total: {{fund?.expenses?.length ?? 0}}</span>
+  </h4>
+  <div class="mat-elevation-z8">
     <table
       mat-table
-      [dataSource]="fund?.expenses || []"
+      [dataSource]="dataSource"
       class="mat-elevation-z8 expenses-table"
     >
       <ng-container matColumnDef="recipient">
@@ -90,8 +90,12 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
     </table>
-  </mat-card-content>
-</mat-card>
+    <mat-paginator [pageSizeOptions]="tablePageSize"
+                   showFirstLastButtons
+                   aria-label="Select page">
+    </mat-paginator>
+  </div>
+</mat-card-content>

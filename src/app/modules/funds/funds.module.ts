@@ -15,6 +15,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import {ClickOutsideDirective} from '../../shared/directives/clickOutside';
 import {FundsRoutingModule} from './funds-routing.module';
@@ -53,7 +54,8 @@ import {AddExpensesModalComponent} from './modals/add-expenses-modal/add-expense
     MatInputModule,
     MatCardModule,
     MatTableModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatPaginatorModule
   ],
   providers: [FundsService]
 })
