@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ContentChild, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import {MatNoDataRow, MatTableDataSource} from '@angular/material/table';
 import {FormControl, Validators} from '@angular/forms';
 
 import {FundsService} from '../../funds.service';
@@ -33,6 +33,7 @@ export class FundDetailsComponent implements OnInit {
   dataSource = new MatTableDataSource<Expense>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ContentChild(MatNoDataRow) noDataRow: MatNoDataRow;
 
   constructor(
     private fundService: FundsService,
